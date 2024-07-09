@@ -1,0 +1,9 @@
+{{- if (eq .chezmoi.os "linux") -}}
+{{- if (eq ( index .chezmoi.osRelease "idLike" ) "ubuntu") -}}
+#!/bin/bash
+
+systemctl --user daemon-reload
+systemctl --user enable --now syncthing
+
+{{ end -}}
+{{ end -}}

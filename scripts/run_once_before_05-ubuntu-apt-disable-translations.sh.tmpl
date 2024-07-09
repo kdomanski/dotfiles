@@ -1,0 +1,18 @@
+{{- if (eq .chezmoi.os "linux") -}}
+{{- if .ubuntu -}}
+#!/bin/bash
+# -*- mode: bash -*-
+
+set -eufo pipefail
+
+# turn off translations, speed up apt update
+if [ ! -d /etc/apt/apt.conf.d ]; then
+    sudo mkdir -p /etc/apt/apt.conf.d
+fi
+
+if ! grep -q 'Acquire::Languages "none";' /etc/apt/apt.conf.d/99translations 2>/dev/null; then
+    echo 'Acquire::Languages "none";' | sudo tee /etc/apt/apt.conf.d/99translations
+fi
+
+{{ end -}}
+{{ end -}}

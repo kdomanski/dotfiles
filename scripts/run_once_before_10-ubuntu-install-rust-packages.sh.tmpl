@@ -1,0 +1,22 @@
+{{- if (eq .chezmoi.os "linux") -}}
+{{- if .debian -}}
+#!/bin/bash
+# -*- mode: bash -*-
+
+set -eufo pipefail
+
+{{- if lookPath "rustup" }}
+rustup update
+{{ else }}
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh /dev/stdin --no-modify-path -y
+{{- end }}
+
+packages=(
+)
+
+for package in ${packages[@]}; do
+    $HOME/.cargo/bin/cargo install eza
+done
+
+{{ end -}}
+{{ end -}}

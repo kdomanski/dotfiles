@@ -1,0 +1,10 @@
+# -*- mode: ini -*-
+
+["bin/openscad"]
+    type = "file"
+    url = "https://files.openscad.org/snapshots/OpenSCAD-2024.07.24.ai20144-x86_64.AppImage"
+    executable = true
+
+[".local/share/icons/OpenSCAD.png"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/openscad/openscad/master/resources/icons/openscad-128.png"

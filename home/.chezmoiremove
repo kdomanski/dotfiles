@@ -1,0 +1,4 @@
+# the unit now comes from the PPA package
+/.local/share/systemd/user/syncthing.service
+/.gitconfig
+/.tmux.conf

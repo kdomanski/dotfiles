@@ -1,0 +1,6 @@
+{{ $paths := list "$HOME/.pyenv" "$HOME/bin" "$HOME/.local/bin" "$HOME/go/bin" "$HOME/.cargo/bin" "/snap/bin" (print "/usr/lib/go-" .versions.golang "/bin" ) }}
+{{ range $paths }}
+if [[ ":$PATH:" != *":{{ . }}:"* ]] && [ -d "{{ . }}" ] ; then
+    PATH="{{ . }}:$PATH"
+fi
+{{ end -}}

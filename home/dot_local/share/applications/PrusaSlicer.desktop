@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=PrusaSlicer
+Exec=bin/PrusaSlicer
+Icon=PrusaSlicer
+Terminal=false
+Categories=3DGraphics;Engineering;Science;

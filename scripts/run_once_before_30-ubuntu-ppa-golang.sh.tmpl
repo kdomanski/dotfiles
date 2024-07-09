@@ -1,0 +1,14 @@
+{{- if (eq .chezmoi.os "linux") -}}
+{{- if .ubuntu -}}
+#!/bin/bash
+# -*- mode: sh -*-
+
+set -eufo pipefail
+
+sudo add-apt-repository --yes ppa:longsleep/golang-backports
+sudo apt update
+
+sudo apt install -y golang-{{ .versions.golang }}
+
+{{ end -}}
+{{ end -}}

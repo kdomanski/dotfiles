@@ -1,0 +1,80 @@
+# -*- mode: toml -*-
+{{  $ephemeral := false -}}
+{{- $headless := true -}}
+{{- $personal := false -}}
+{{- $moonraker_uuid := "" -}}
+{{- $wsl := false -}}
+{{- $debian := or (eq .chezmoi.osRelease.id "debian")
+                  (regexMatch "(^| )debian( |$)" .chezmoi.osRelease.idLike) -}}
+{{- $ubuntu := or (eq .chezmoi.osRelease.id "ubuntu")
+                  (regexMatch "(^| )ubuntu( |$)" .chezmoi.osRelease.idLike) -}}
+{{- $ubuntuCodename := "" -}}
+{{- if hasKey .chezmoi.osRelease "ubuntuCodename" -}}
+{{- $ubuntuCodename = .chezmoi.osRelease.ubuntuCodename -}}
+{{- end -}}
+{{- $raspi := and (eq .chezmoi.os "linux")
+                  (eq .chezmoi.osRelease.id "raspbian") -}}
+                {{/*# or (stat "/boot/LICENCE.broadcom") */ -}}
+{{- $moonraker_uuid_path :=
+      joinPath .chezmoi.homeDir "printer_data" ".moonraker.uuid" -}}
+{{- $klipper := not ( empty ( stat $moonraker_uuid_path)) -}}
+
+{{/* # detect GitHub codespaces, VSCode remote containers, Docker containers, and Vagrant boxes */}}
+{{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") (env "S6_BEHAVIOUR_IF_STAGE2_FAILS")
+          (eq .chezmoi.username "root" "vagrant" "vscode") -}}
+{{-   $headless = true -}}
+{{-   $ephemeral = true -}}
+{{- end -}}
+
+{{/* # detect WSL */}}
+{{- if (env "WSL_DISTRO_NAME") -}}
+{{-   $wsl = true -}}
+{{-   $headless = false -}}
+{{-   $ephemeral = false -}}
+{{- end -}}
+
+{{- if not $ephemeral -}}
+{{-   if and (hasKey . "personal") .personal -}}
+{{-     $headless = false -}}
+{{-     $personal = true -}}
+{{-   else if eq .chezmoi.os "darwin" -}}
+{{-     $headless = false -}}
+{{-     $personal = false -}}
+{{-   else if $wsl -}}
+{{-     $headless = true -}}
+{{-     $personal = true -}}
+{{-   else if stdinIsATTY -}}
+{{-     $headless = promptBoolOnce . "headless" "headless" -}}
+{{-     if hasKey . "ephemeral" -}}
+{{-       $ephemeral = .ephemeral -}}
+{{-     else -}}
+{{-       $ephemeral = promptBool "ephemeral" -}}
+{{-     end -}}
+{{-   end }}
+{{- end -}}
+
+[data]
+    ephemeral = {{ $ephemeral }}
+    headless = {{ $headless }}
+    personal = {{ $personal}}
+    raspi = {{ $raspi }}
+    qnap = {{ eq .chezmoi.osRelease.id "qts" }}
+    debian = {{ $debian }}
+    ubuntu = {{ $ubuntu }}
+{{- if $ubuntu }}
+    ubuntuCodename = {{ $ubuntuCodename | quote }}
+{{- end }}
+    klipper = {{ $klipper }}
+    wsl = {{ $wsl }}
+{{- if stat $moonraker_uuid_path }}
+    moonraker_uuid = {{ include $moonraker_uuid_path | quote }}
+{{- end }}
+
+[data.versions]
+    eza = "0.18.21"
+    golang = "1.22"
+    ripgrep = "14.1.0"
+
+[data.git]
+    name = "Kamil Domański"
+    email = {{ promptStringOnce . "git.email" "git commit email" | quote }}

@@ -1,0 +1,22 @@
+{{- if or (not .headless) .wsl -}}
+#!/bin/bash
+
+set -eufo pipefail
+
+extensions=(
+	antyos.openscad
+	chrislajoie.vscode-modelines
+	eamodio.gitlens
+	github.copilot
+	golang.Go
+	hashicorp.terraform
+	ms-azuretools.vscode-docker
+	ms-vscode.cmake-tools
+	ms-vscode-remote.remote-ssh
+	tamasfe.even-better-toml
+)
+
+for extension in ${extensions[@]}; do
+	code --force --install-extension $extension
+done
+{{- end }}

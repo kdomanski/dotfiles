@@ -1,0 +1,101 @@
+#!/usr/bin/env zsh
+# -*- mode: zsh -*-
+
+# This ensures proper operation of Home key, End key, etc.
+export TERM="xterm-256color"
+export ZSH=$HOME/.oh-my-zsh
+
+{{if .headless -}}
+ZSH_THEME="agnoster"
+{{- else -}}
+ZSH_THEME="powerlevel10k/powerlevel10k"
+{{- end}}
+
+# Uncomment the following line to use case-sensitive completion.
+CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to automatically update without prompting.
+DISABLE_UPDATE_PROMPT="true"
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS=true
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+ZSH_HIGHLIGHT_MAXLENGTH=128
+
+plugins=(
+    command-not-found
+    direnv
+    git
+    {{- if not (or .ephemeral .headless) }}
+    kubectl
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+    ssh-agent
+    {{- end }}
+    z
+    {{- if (eq .chezmoi.os "darwin") }}
+    zsh-brew-autoupdate
+    {{- end }}
+)
+
+export LC_ALL=en_US.UTF-8
+
+# don't load ssh keys before first use
+zstyle :omz:plugins:ssh-agent lazy yes
+
+source $ZSH/oh-my-zsh.sh
+
+# custom aliases
+{{- if lookPath "eza" }}
+alias ls=eza
+{{- else if lookPath "exa" }}
+alias ls=exa
+{{- end }}
+{{- if and (lookPath "fdfind") (not (lookPath "fd")) }}
+alias fd=fdfind
+{{- end }}
+alias code='code --goto'
+{{- if not (or .ephemeral .headless) }}
+alias amplayer='mplayer -vo null -af scaletempo'
+alias youtube-dl-audio='youtube-dl -x --audio-format vorbis'
+{{- end }}
+alias rga='rg --no-ignore --hidden'
+alias tf=terraform
+alias tempd='cd $(mktemp -d)'
+alias chezmoicd='cd ~/.local/share/chezmoi'
+
+setopt HIST_IGNORE_SPACE
+setopt HIST_REDUCE_BLANKS
+setopt HIST_SAVE_NO_DUPS
+HISTSIZE=10000
+SAVEHIST=1000000
+HISTFILESIZE=64000
+HISTORY_IGNORE="(cd|ls|export OP_SESSION*|op signin *|export *GITHUB_TOKEN*|export VAULT_TOKEN*)"
+
+{{ template "tmux_start" . }}
+
+# "(N)" is the ZSH null glob qualifier
+# https://zsh.sourceforge.io/Doc/Release/Expansion.html#Glob-Qualifiers
+for i in $HOME/.zshrc.d/*(N); do
+    if [ -x "$i" ]; then
+        source "$i"
+    fi
+done
+
+{{ if not .headless -}}
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+{{ end }}

@@ -1,0 +1,22 @@
+{{- if and .ubuntu (not .headless) -}}
+#!/bin/bash
+# -*- mode: bash -*-
+
+set -eufo pipefail
+
+FORCE=0
+
+sudo rm -f /usr/share/keyrings/syncthing-archive-keyring.gpg
+if [ ! -f "/etc/apt/keyrings/syncthing-archive-keyring.gpg" ]; then
+    sudo curl -s -o /etc/apt/keyrings/syncthing-archive-keyring.gpg https://syncthing.net/release-key.gpg
+    FORCE=1
+fi
+if [ ! -f "/etc/apt/sources.list.d/syncthing.list" ] || [ "$FORCE" == 1 ]; then
+    echo "deb [signed-by=/etc/apt/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list
+    sudo apt-get update
+    sudo apt-get install syncthing
+fi
+
+# enabled in run_once_after_30_enable_syncthing_service.sh.tmpl
+
+{{ end -}}

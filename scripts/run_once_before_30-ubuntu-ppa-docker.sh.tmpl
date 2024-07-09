@@ -1,0 +1,22 @@
+{{- if (eq .chezmoi.os "linux") -}}
+{{- if or (eq ( index .chezmoi.osRelease "id" ) "ubuntu") (eq ( index .chezmoi.osRelease "idLike" ) "ubuntu") -}}
+#!/bin/bash
+
+set -eufo pipefail
+
+{{ if eq ( index .chezmoi.osRelease "id" ) "ubuntu" }}
+RELEASE="$(lsb_release -cs)"
+{{ else }}
+eval $(cat /etc/os-release | grep UBUNTU_CODENAME)
+RELEASE=$UBUNTU_CODENAME
+{{ end }}
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/docker-archive-keyring.gpg arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu $RELEASE stable" | sudo tee /etc/apt/sources.list.d/docker.list
+
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli
+sudo usermod --append --groups docker {{ .chezmoi.username }}
+
+{{ end -}}
+{{ end -}}

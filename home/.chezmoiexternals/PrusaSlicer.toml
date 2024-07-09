@@ -1,0 +1,13 @@
+# -*- mode: ini -*-
+
+["bin/PrusaSlicer"]
+    type = "file"
+    {{- $assetPattern := "PrusaSlicer-*+linux-x64-GTK3-*.AppImage" }}
+    #url = {{/* gitHubLatestReleaseAssetURL "prusa3d/PrusaSlicer" $assetPattern | quote */}}
+    {{ $theDict := (dict "URLPattern" "linux-x64-GTK3-\\d+.AppImage" "repo" "prusa3d/PrusaSlicer" "versionRegex" (regexQuoteMeta "version_2.7.4")) -}}
+    url = {{ template "githubSelectReleaseAssetURL" $theDict }}
+    executable = true
+
+[".local/share/icons/PrusaSlicer.svg"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/prusa3d/PrusaSlicer/master/resources/icons/PrusaSlicer.svg"

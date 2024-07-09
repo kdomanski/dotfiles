@@ -1,0 +1,28 @@
+{{ if ne .chezmoi.os "darwin" }}
+/Library
+{{ end }}
+
+/.oh-my-zsh/cache/
+/.oh-my-zsh/custom/themes/powerlevel10k/**/*.zwc
+
+{{ if or (ne .chezmoi.os "linux") .headless .ephemeral }}
+/.local/share/applications
+
+/.local/share/applications/PrusaSlicer.dektop
+/.local/share/icons/PrusaSlicer.svg
+/bin/PrusaSlicer
+
+/.local/share/applications/OpenSCAD.desktop
+/.local/share/icons/OpenSCAD.png
+/bin/openscad
+
+/.config/tmux/
+/.tmux/
+
+/.config/Code
+/.config/Code - OSS
+/Library/Application Support/Code
+{{ end }}
+{{ if .headless }}
+/.p10k.zsh
+{{ end }}

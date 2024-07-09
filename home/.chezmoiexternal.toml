@@ -1,0 +1,36 @@
+# -*- mode: ini -*-
+
+{{ if not (or .headless .ephemeral) }}
+[".tmux/plugins/nord-tmux"]
+    type = "archive"
+    url = "https://github.com/arcticicestudio/nord-tmux/archive/refs/heads/develop.zip"
+    exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
+{{ end }}
+
+# ripgrep
+{{ $rgarch := ""}}
+{{ if and (eq .chezmoi.os "darwin") (eq .chezmoi.arch "arm64") }}
+    {{ $rgarch = "aarch64-apple-darwin" }}
+{{ else if (eq .chezmoi.arch "amd64") -}}
+    {{ $rgarch = "x86_64-unknown-linux-musl" }}
+{{ else if (or .raspi (eq .chezmoi.arch "arm")) -}}
+    {{ $rgarch = "armv7-unknown-linux-gnueabihf" }}
+{{ else }}
+    {{ $rgarch = "x86_64-unknown-linux-musl" }}
+{{ end -}}
+["bin/rg"]
+type = "archive-file"
+url = "https://github.com/BurntSushi/ripgrep/releases/download/{{ .versions.ripgrep }}/ripgrep-{{ .versions.ripgrep }}-{{ $rgarch }}.tar.gz"
+path = "ripgrep-{{ .versions.ripgrep }}-{{ $rgarch }}/rg"
+
+["bin/diff-so-fancy"]
+    type = "file"
+    url = "https://github.com/so-fancy/diff-so-fancy/releases/download/v1.4.4/diff-so-fancy"
+    executable = true
+
+["bin/kubectl"]
+    type = "file"
+    url = "https://dl.k8s.io/release/v1.29.6/bin/linux/amd64/kubectl"
+    executable = true

@@ -1,0 +1,25 @@
+{{- /*
+# -*- mode: sh -*-
+*/ -}}
+
+# if running under Freedesktop, WSL or iTerm, connect to tmux
+{{- if .wsl }}
+if [ ! -z "$WSL_DISTRO_NAME" ]; then
+{{- else if (eq .chezmoi.os "darwin") }}
+if [ ! -z "$ITERM_SESSION_ID" ]; then
+{{- else }}
+if [ ! -z "$XDG_CURRENT_DESKTOP" ]; then
+{{- end }}
+    if [ -z "$TMUX" ]; then
+        # not connected to a session
+        if ! tmux has-session -t tmux0; then
+            # tmux0 session doesn't exist
+            tmux new-session -s tmux0
+        else
+            if [ -z "$(tmux list-clients -t tmux0)" ]; then
+                # session exists but isn't attached
+                tmux attach -t tmux0
+            fi
+        fi
+    fi
+fi

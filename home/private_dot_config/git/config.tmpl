@@ -1,0 +1,45 @@
+# -*- mode: ini -*-
+
+# for compatibility with diff-so-fancy
+[add "interactive"]
+	useBuiltin = false
+[alias]
+	dd = diff --cached
+	sub = submodule update --init --recursive
+	update = "!f(){ git fetch origin && git rebase $(git symbolic-ref refs/remotes/origin/HEAD); };f"
+[branch]
+	sort = -committerdate
+[color]
+	ui = auto
+[commit]
+	gpgsign = false
+[core]
+	pager = $HOME/bin/diff-so-fancy | less --tabs=4 -RFX
+	autocrlf = false
+[diff]
+	renames = copies
+	algorithm = histogram
+[fetch]
+	prune = true
+[gpg]
+	program = /usr/bin/gpg2
+[grep]
+	lineNumber = true
+[init]
+	defaultBranch = main
+[interactive]
+    diffFilter = "diff-so-fancy --patch"
+[pull]
+	rebase = true
+[push]
+	default = simple
+[stash]
+	showPatch = true
+[rebase]
+	autostash = true
+[user]
+	email = {{ .git.email }}
+	name = Kamil Domański
+
+[url "git@github.com:kdomanski/"]
+	insteadOf = https://github.com/kdomanski/

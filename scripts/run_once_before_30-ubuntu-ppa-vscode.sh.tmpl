@@ -1,0 +1,11 @@
+{{- if .ubuntu -}}
+#!/bin/bash
+
+set -eufo pipefail
+
+sudo curl -s https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /usr/share/keyrings/packages-microsoft.gpg &>/dev/null
+echo "deb [signed-by=/usr/share/keyrings/packages-microsoft.gpg arch=amd64] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
+sudo apt-get update
+sudo apt-get install code
+
+{{ end -}}

@@ -1,0 +1,12 @@
+{{- $URLPattern := .URLPattern -}}
+{{- $repo := .repo -}}
+{{- $versionRegex := .versionRegex -}}
+{{- range (gitHubReleases .repo | toJson | fromJson) -}}
+{{ if regexMatch $versionRegex .tag_name}}
+{{- range .assets -}}
+{{- if ( regexMatch $URLPattern .name) -}}
+{{- .browser_download_url | quote | trim -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}

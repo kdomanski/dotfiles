@@ -1,0 +1,22 @@
+# -*- mode: zsh -*-
+
+export EDITOR=vim
+export CLICOLOR=1
+
+{{- template "path" . -}}
+
+{{- if .qnap }}
+PATH="$PATH:/share/CACHEDEV1_DATA/.qpkg/Entware/bin"
+{{- end -}}
+
+{{- if (eq .chezmoi.os "darwin") }}
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+export GPG_TTY=$(tty)
+{{ end }}
+
+if [ -d "$HOME/.nvm" ]; then
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh" # This loads nvm
+    # [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+fi
