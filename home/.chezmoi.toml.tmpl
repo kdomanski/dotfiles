@@ -70,11 +70,6 @@
     moonraker_uuid = {{ include $moonraker_uuid_path | quote }}
 {{- end }}
 
-[data.versions]
-    eza = "0.18.21"
-    golang = "1.22"
-    ripgrep = "14.1.0"
-
 [data.git]
     name = "Kamil Domański"
     email = {{ promptStringOnce . "git.email" "git commit email" | quote }}
