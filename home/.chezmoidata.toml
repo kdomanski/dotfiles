@@ -1,6 +1,6 @@
 [versions]
 # renovate: packageName=eza-community/eza extractVersion="(?<version>v\\d+(\\.\\d+)+)"
-eza = "0.18.21"
+eza = "0.19.0"
 golang = "1.22"
 # renovate: packageName=BurntSushi/ripgrep
 ripgrep = "14.1.0"
