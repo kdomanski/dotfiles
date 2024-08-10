@@ -1,0 +1,5 @@
+[versions]
+
+eza = "0.18.21"
+golang = "1.22"
+ripgrep = "14.1.0"
