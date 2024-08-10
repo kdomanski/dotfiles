@@ -10,7 +10,7 @@
         "(^|/)\\.chezmoidata\\.toml$"
       ],
       "matchStrings": [
-        "# renovate:(?: packageName=(?<packageName>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))? +.*\\s+[A-Za-z0-9_]+ ?= ?[\"']?(?<currentValue>.+?)[\"']?\\s"
+        "# renovate:(?: packageName=(?<packageName>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?\\s+[A-Za-z0-9_]+ ?= ?[\"']?(?<currentValue>.+?)[\"']?\\s"
       ]
     }
   ]
