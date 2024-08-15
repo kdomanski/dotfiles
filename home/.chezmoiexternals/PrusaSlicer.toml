@@ -3,9 +3,7 @@
 ["bin/PrusaSlicer"]
     type = "file"
     {{- $assetPattern := "PrusaSlicer-*+linux-x64-GTK3-*.AppImage" }}
-    #url = {{/* gitHubLatestReleaseAssetURL "prusa3d/PrusaSlicer" $assetPattern | quote */}}
-    {{ $theDict := (dict "URLPattern" "linux-x64-GTK3-\\d+.AppImage" "repo" "prusa3d/PrusaSlicer" "versionRegex" (regexQuoteMeta "version_2.7.4")) -}}
-    url = {{ template "githubSelectReleaseAssetURL" $theDict }}
+    url = {{ gitHubReleaseAssetURL "prusa3d/PrusaSlicer" "version_2.8.0" $assetPattern | quote }}
     executable = true
 
 [".local/share/icons/PrusaSlicer.svg"]
