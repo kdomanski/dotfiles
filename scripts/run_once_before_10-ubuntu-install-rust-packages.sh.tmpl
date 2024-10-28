@@ -1,4 +1,4 @@
-{{- if (eq .chezmoi.os "linux") -}}
+{{- if and (eq .chezmoi.os "linux") (not .ephemeral) (not .headless)  -}}
 {{- if .debian -}}
 #!/bin/bash
 # -*- mode: bash -*-
@@ -15,7 +15,7 @@ packages=(
 )
 
 for package in ${packages[@]}; do
-    $HOME/.cargo/bin/cargo install eza
+    $HOME/.cargo/bin/cargo install $package
 done
 
 {{ end -}}
