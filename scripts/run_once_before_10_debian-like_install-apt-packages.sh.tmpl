@@ -30,7 +30,8 @@ done
 
 current_shell="$(getent passwd $(whoami) | awk -F: '{print $NF}')"
 if [[ "$current_shell" != "/bin/zsh" ]]; then
-    chsh -s /bin/zsh {{ .chezmoi.username }}
+    # avoids the question for current password when running as normal user
+    sudo chsh -s /bin/zsh {{ .chezmoi.username }}
 fi
 
 {{ end -}}
