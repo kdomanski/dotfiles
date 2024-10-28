@@ -41,5 +41,7 @@
 	email = {{ .git.email }}
 	name = Kamil Domański
 
+{{ if not (or .ephemeral .headless) -}}
 [url "git@github.com:kdomanski/"]
 	insteadOf = https://github.com/kdomanski/
+{{- end }}
