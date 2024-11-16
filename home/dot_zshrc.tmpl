@@ -83,7 +83,8 @@ setopt HIST_SAVE_NO_DUPS
 HISTSIZE=10000
 SAVEHIST=1000000
 HISTFILESIZE=64000
-HISTORY_IGNORE="(cd|ls|export OP_SESSION*|op signin *|export *GITHUB_TOKEN*|export VAULT_TOKEN*)"
+HISTORY_IGNORE="(cd|ls|export OP_SESSION*|op signin *|export *GITHUB_TOKEN*|export VAULT_TOKEN*\
+|export AWS_SESSION_TOKEN*|export AWS_ACCESS_KEY_ID*|export AWS_SECRET_ACCESS_KEY*)"
 
 {{ template "tmux_start" . }}
 
