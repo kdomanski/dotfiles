@@ -1,0 +1,7 @@
+[global]
+strict_env = true
+load_dotenv = true
+
+[whitelist]
+prefix = []
+exact = []

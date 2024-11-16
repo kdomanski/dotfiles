@@ -34,3 +34,10 @@ path = "ripgrep-{{ .versions.ripgrep }}-{{ $rgarch }}/rg"
     type = "file"
     url = "https://dl.k8s.io/release/v1.29.6/bin/linux/amd64/kubectl"
     executable = true
+
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.arch "amd64") }}
+["bin/direnv"]
+    type = "file"
+    url = "https://github.com/direnv/direnv/releases/download/v2.35.0/direnv.linux-amd64"
+    executable = true
+{{end}}
