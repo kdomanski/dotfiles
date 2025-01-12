@@ -8,7 +8,9 @@ set -eufo pipefail
 sudo add-apt-repository --yes ppa:longsleep/golang-backports
 sudo apt update
 
-sudo apt install -y golang-{{ .versions.golang }}
+#sudo apt install -y golang-{{ .versions.golang }}
+sudo apt install -y golang-go
 
 {{ end -}}
 {{ end -}}
+
