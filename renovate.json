@@ -5,7 +5,7 @@
   "customManagers": [
     {
       "customType": "regex",
-      "depNameTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
+      "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
       "fileMatch": [
         "(^|/)\\.chezmoidata\\.toml$"
       ],
