@@ -5,3 +5,5 @@ eza = "0.20.16"
 golang = "1.22"
 # renovate: packageName=BurntSushi/ripgrep
 ripgrep = "14.1.1"
+# renovate: packageName=zsh-users/zsh-autosuggestions
+zshautosuggestions = "0.7.0"
