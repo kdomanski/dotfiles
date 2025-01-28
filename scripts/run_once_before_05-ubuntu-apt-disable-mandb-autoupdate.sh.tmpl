@@ -1,0 +1,10 @@
+{{- if .ubuntu -}}
+#!/bin/bash
+# -*- mode: bash -*-
+
+set -eufo pipefail
+
+# remove "magic" file
+sudo rm -f /var/lib/man-db/auto-update
+
+{{ end -}}
