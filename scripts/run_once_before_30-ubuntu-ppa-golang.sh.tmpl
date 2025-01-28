@@ -8,7 +8,12 @@ set -eufo pipefail
 sudo add-apt-repository --yes ppa:longsleep/golang-backports
 sudo apt update
 
-#sudo apt install -y golang-{{ .versions.golang }}
+
+# check whether golang-1.22 package is installed
+if dpkg -l golang-1.22 >/dev/null; then
+    sudo apt purge -y golang-1.22 golang-1.22-*
+fi
+
 sudo apt install -y golang-go
 
 {{ end -}}
