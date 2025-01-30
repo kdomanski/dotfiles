@@ -1,6 +1,6 @@
 [versions]
 # renovate: packageName=eza-community/eza
-eza = "0.20.18"
+eza = "0.20.19"
 # renovate: datasource=github-tags packageName=golang/go extractVersion="(?<version>go\\d+(\\.\\d+)+)"
 golang = "1.22"
 # renovate: packageName=BurntSushi/ripgrep
