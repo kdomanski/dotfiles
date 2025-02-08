@@ -1,5 +1,4 @@
-{{- if (eq .chezmoi.os "linux") -}}
-{{- if and .ubuntu (.personal) -}}
+{{- if and .ubuntu .personal (not .wsl) -}}
 #!/bin/bash
 # -*- mode: bash -*-
 
@@ -18,5 +17,4 @@ echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] 
 sudo apt update && sudo apt install signal-desktop
 
 
-{{ end -}}
 {{ end -}}
