@@ -1,0 +1,38 @@
+#!/bin/sh
+set -eu
+
+current="$(cat)"
+
+SECTION_TO_ADD="
+Host *
+    ControlMaster auto
+    ControlPath ~/.ssh/controlmasters/%r@%h:%p
+    ControlPersist 600"
+
+get_host_section() {
+    targethost="$1"
+    # find beginning of the section
+    starting_line=$(echo "$current" | grep -m1 -n "Host $targethost"| cut -f1 -d:)
+    if [ -z "$starting_line" ]; then
+        return 1
+    fi
+
+    # find end of the section
+    ending_line=$(echo "$current" | tail -n +"$(($starting_line+1))" | grep -m1 -n 'Host[ ]+*' | cut -f1 -d:)
+    if [ -z "$ending_line" ]; then
+        # no next section found, therefore end of file is the end of the section
+        ending_line=$(( $(echo "$current" | wc -l) + 1))
+    else
+        ending_line=$(($starting_line + $ending_line))
+    fi
+
+    # echo all lines from starting_line until ening_line
+    section="$(echo "$current" | head -n $(($ending_line-1)) | tail -n +$starting_line)"
+    echo "$section"
+}
+
+echo "$current"
+
+if ! section=$(get_host_section '\*'); then
+    echo "$SECTION_TO_ADD"
+fi
