@@ -3,15 +3,12 @@
 {{- $headless := true -}}
 {{- $personal := false -}}
 {{- $moonraker_uuid := "" -}}
-{{- $wsl := false -}}
+
 {{- $debian := or (eq .chezmoi.osRelease.id "debian")
                   (regexMatch "(^| )debian( |$)" .chezmoi.osRelease.idLike) -}}
 {{- $ubuntu := or (eq .chezmoi.osRelease.id "ubuntu")
                   (regexMatch "(^| )ubuntu( |$)" .chezmoi.osRelease.idLike) -}}
-{{- $ubuntuCodename := "" -}}
-{{- if hasKey .chezmoi.osRelease "ubuntuCodename" -}}
-{{- $ubuntuCodename = .chezmoi.osRelease.ubuntuCodename -}}
-{{- end -}}
+{{- $ubuntuCodename := get .chezmoi.osRelease "ubuntuCodename" -}}
 {{- $raspi := and (eq .chezmoi.os "linux")
                   (eq .chezmoi.osRelease.id "raspbian") -}}
                 {{/*# or (stat "/boot/LICENCE.broadcom") */ -}}
@@ -26,23 +23,20 @@
 {{-   $ephemeral = true -}}
 {{- end -}}
 
-{{/* # detect WSL */}}
-{{- if (env "WSL_DISTRO_NAME") -}}
-{{-   $wsl = true -}}
-{{-   $headless = false -}}
+{{- $wsl := not (empty (env "WSL_DISTRO_NAME")) -}}
+{{- if $wsl -}}
+{{-   $headless = true -}}
 {{-   $ephemeral = false -}}
+{{-   $personal = true -}}
 {{- end -}}
 
-{{- if not $ephemeral -}}
+{{- if and (not $ephemeral) (not $wsl) -}}
 {{-   if and (hasKey . "personal") .personal -}}
 {{-     $headless = false -}}
 {{-     $personal = true -}}
 {{-   else if eq .chezmoi.os "darwin" -}}
 {{-     $headless = false -}}
 {{-     $personal = false -}}
-{{-   else if $wsl -}}
-{{-     $headless = true -}}
-{{-     $personal = true -}}
 {{-   else if stdinIsATTY -}}
 {{-     $headless = promptBoolOnce . "headless" "headless" -}}
 {{-     if hasKey . "ephemeral" -}}
