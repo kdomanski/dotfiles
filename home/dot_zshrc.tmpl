@@ -77,6 +77,10 @@ alias tf=terraform
 alias tempd='cd $(mktemp -d)'
 alias chezmoicd='cd ~/.local/share/chezmoi'
 
+{{- if lookPath "pio" }}
+eval "$(_PIO_COMPLETE=zsh_source pio)"
+{{- end }}
+
 setopt HIST_IGNORE_SPACE
 setopt HIST_REDUCE_BLANKS
 setopt HIST_SAVE_NO_DUPS
