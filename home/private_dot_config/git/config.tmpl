@@ -32,11 +32,13 @@
 [pull]
 	rebase = true
 [push]
+	autoSetupRemote = true
 	default = simple
 [stash]
 	showPatch = true
 [rebase]
 	autostash = true
+	autoSquash = true
 [user]
 	email = {{ .git.email }}
 	name = Kamil Domański
