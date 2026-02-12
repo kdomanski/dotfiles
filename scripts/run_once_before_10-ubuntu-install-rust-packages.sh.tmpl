@@ -1,4 +1,4 @@
-{{- if and (eq .chezmoi.os "linux") (not .ephemeral) (not .headless)  -}}
+{{- if and (eq .chezmoi.os "linux") (not .ephemeral) (not .headless) .personal -}}
 {{- if .debian -}}
 #!/bin/bash
 # -*- mode: bash -*-

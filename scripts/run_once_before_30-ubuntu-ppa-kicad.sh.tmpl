@@ -1,4 +1,4 @@
-{{- if and .ubuntu (not .ephemeral) (not .headless) -}}
+{{- if and .ubuntu (not .ephemeral) (not .headless) .personal -}}
 #!/bin/bash
 
 set -eufo pipefail
