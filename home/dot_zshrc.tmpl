@@ -43,7 +43,13 @@ plugins=(
     kubectl
     zsh-autosuggestions
     zsh-syntax-highlighting
+    {{- end }}
+    {{- if not .ephemeral }}
     ssh-agent
+        {{- if lookPath "diff-so-fancy" }}
+    virtualenv
+    virtualenvwrapper
+        {{- end }}
     {{- end }}
     z
     {{- if (eq .chezmoi.os "darwin") }}
