@@ -4,6 +4,6 @@ eza = "0.23.4"
 # renovate: datasource=github-tags packageName=golang/go extractVersion="(?<version>go\\d+(\\.\\d+)+)"
 golang = "1.22"
 # renovate: packageName=BurntSushi/ripgrep
-ripgrep = "14.1.1"
+ripgrep = "15.1.0"
 # renovate: datasource=github-tags packageName=zsh-users/zsh-autosuggestions
 zshautosuggestions = "0.7.1"
