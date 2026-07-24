@@ -3,15 +3,22 @@
 {{- $headless := true -}}
 {{- $personal := false -}}
 {{- $moonraker_uuid := "" -}}
+{{- $debian := false -}}
+{{- $ubuntu := false -}}
+{{- $ubuntuCodename := "" -}}
+{{- $raspi := false -}}
 
-{{- $debian := or (eq .chezmoi.osRelease.id "debian")
-                  (regexMatch "(^| )debian( |$)" .chezmoi.osRelease.idLike) -}}
-{{- $ubuntu := or (eq .chezmoi.osRelease.id "ubuntu")
-                  (regexMatch "(^| )ubuntu( |$)" .chezmoi.osRelease.idLike) -}}
-{{- $ubuntuCodename := get .chezmoi.osRelease "ubuntuCodename" -}}
-{{- $raspi := and (eq .chezmoi.os "linux")
-                  (eq .chezmoi.osRelease.id "raspbian") -}}
-                {{/*# or (stat "/boot/LICENCE.broadcom") */ -}}
+{{- if eq .chezmoi.os "linux"}}
+    {{- $debian = or (eq .chezmoi.osRelease.id "debian")
+                    (regexMatch "(^| )debian( |$)" .chezmoi.osRelease.idLike) -}}
+    {{- $ubuntu = or (eq .chezmoi.osRelease.id "ubuntu")
+                    (regexMatch "(^| )ubuntu( |$)" .chezmoi.osRelease.idLike) -}}
+    {{- $ubuntuCodename = get .chezmoi.osRelease "ubuntuCodename" -}}
+    {{- $raspi = and (eq .chezmoi.os "linux")
+                    (eq .chezmoi.osRelease.id "raspbian") -}}
+                    {{/*# or (stat "/boot/LICENCE.broadcom") */ -}}
+{{- end -}}
+
 {{- $moonraker_uuid_path :=
       joinPath .chezmoi.homeDir "printer_data" ".moonraker.uuid" -}}
 {{- $klipper := not ( empty ( stat $moonraker_uuid_path)) -}}
@@ -52,7 +59,7 @@
     headless = {{ $headless }}
     personal = {{ $personal}}
     raspi = {{ $raspi }}
-    qnap = {{ eq .chezmoi.osRelease.id "qts" }}
+    qnap = {{ eq (get .chezmoi.osRelease "id") "qts" }}
     debian = {{ $debian }}
     ubuntu = {{ $ubuntu }}
 {{- if $ubuntu }}
