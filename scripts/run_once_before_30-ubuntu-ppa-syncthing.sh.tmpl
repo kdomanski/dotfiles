@@ -1,4 +1,4 @@
-{{- if and .ubuntu (not .headless) .personal -}}
+{{- if eq (includeTemplate "installSyncthing" .) "true" -}}
 #!/bin/bash
 # -*- mode: bash -*-
 
