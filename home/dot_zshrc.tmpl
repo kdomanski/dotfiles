@@ -79,6 +79,7 @@ alias amplayer='mplayer -vo null -af scaletempo'
 alias youtube-dl-audio='youtube-dl -x --audio-format vorbis'
 {{- end }}
 alias rga='rg --no-ignore --hidden'
+rgl() { rg --color=always "$@" | less; }
 alias tf=terraform
 alias tempd='cd $(mktemp -d)'
 alias chezmoicd='cd ~/.local/share/chezmoi'
