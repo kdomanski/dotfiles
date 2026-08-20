@@ -73,6 +73,9 @@ alias ls=exa
 {{- if and (lookPath "fdfind") (not (lookPath "fd")) }}
 alias fd=fdfind
 {{- end }}
+{{- if and (lookPath "batcat") (not (lookPath "bat")) }}
+alias bat=batcat
+{{- end }}
 alias code='code --goto'
 {{- if not (or .ephemeral .headless) }}
 alias amplayer='mplayer -vo null -af scaletempo'
