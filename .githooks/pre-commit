@@ -1,0 +1,30 @@
+#!/bin/sh
+# Blocks commits whose staged changes add a merge-conflict marker or
+# something that looks like a leaked secret (private key, API token env var).
+set -eu
+
+status=0
+hits=$(
+    git diff --cached -U0 --diff-filter=ACM -- . \
+        | grep -E '^\+' \
+        | grep -v '^+++' \
+        | sed 's/^\+//' \
+        | grep -E \
+            -e '^(<<<<<<<|>>>>>>>)[[:space:]]' \
+            -e '^=======$' \
+            -e '-----BEGIN [A-Z ]*PRIVATE KEY-----' \
+            -e '(OP_SESSION|GITHUB_TOKEN|VAULT_TOKEN|AWS_SESSION_TOKEN|AWS_ACCESS_KEY_ID|AWS_SECRET_ACCESS_KEY)[[:space:]]*='
+) || status=$?
+
+# grep exit 1 just means "no matches" (the good outcome); anything higher is
+# a real tool failure, and we'd rather block the commit than pass it blind.
+if [ "$status" -gt 1 ]; then
+    echo "pre-commit: secret/conflict-marker scan failed to run (grep exit $status) - refusing to commit blind" >&2
+    exit 1
+fi
+
+if [ -n "$hits" ]; then
+    echo "pre-commit: blocked - staged changes contain a conflict marker or look like a leaked secret:" >&2
+    echo "$hits" | sed 's/^/  /' >&2
+    exit 1
+fi
