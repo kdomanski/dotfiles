@@ -8,7 +8,7 @@ Library
 {{ if or (ne .chezmoi.os "linux") .headless .ephemeral (not .personal) }}
 .local/share/applications
 
-.local/share/applications/PrusaSlicer.dektop
+.local/share/applications/PrusaSlicer.desktop
 .local/share/icons/PrusaSlicer.svg
 bin/PrusaSlicer
 
