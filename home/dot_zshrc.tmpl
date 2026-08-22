@@ -44,10 +44,13 @@ plugins=(
     {{- end }}
     {{- if not .ephemeral }}
     ssh-agent
-        {{- if lookPath "diff-so-fancy" }}
+        {{- if lookPath "virtualenvwrapper.sh" }}
     virtualenv
     virtualenvwrapper
         {{- end }}
+    {{- end }}
+    {{- if lookPath "fzf" }}
+    fzf
     {{- end }}
     z
     {{- if (eq .chezmoi.os "darwin") }}
@@ -84,6 +87,27 @@ rgl() { rg --color=always "$@" | less; }
 alias tf=terraform
 alias tempd='cd $(mktemp -d)'
 alias chezmoicd='cd ~/.local/share/chezmoi'
+
+{{- if lookPath "fzf" }}
+{{ "" }}
+{{- $fd := "fd" }}
+{{- if and (lookPath "fdfind") (not (lookPath "fd")) }}{{ $fd = "fdfind" }}{{ end }}
+{{- $bat := "bat" }}
+{{- if and (lookPath "batcat") (not (lookPath "bat")) }}{{ $bat = "batcat" }}{{ end }}
+# fzf: use fd as the backend so .gitignore and hidden-file rules are respected.
+# Aliases don't apply here - fzf runs these in a subshell - so the real binary
+# name is resolved at chezmoi-apply time.
+{{- if or (lookPath "fd") (lookPath "fdfind") }}
+export FZF_DEFAULT_COMMAND='{{ $fd }} --type f --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND='{{ $fd }} --type d --hidden --follow --exclude .git'
+{{- end }}
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --info=inline'
+{{- if or (lookPath "bat") (lookPath "batcat") }}
+export FZF_CTRL_T_OPTS="--preview '{{ $bat }} --color=always --style=numbers --line-range=:200 {}'"
+{{- end }}
+export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window=down:3:hidden:wrap --bind '?:toggle-preview'"
+{{- end }}
 
 {{- if lookPath "pio" }}
 eval "$(_PIO_COMPLETE=zsh_source pio)"
