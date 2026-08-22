@@ -22,3 +22,11 @@
 
 # direnv
 .direnv/
+
+# Claude Code: per-machine local state, never shared.
+# settings.local.json holds this machine's permission grants; .cc-writes/ is
+# ephemeral scratch. The leading **/ is required - without it the embedded
+# slash would anchor the pattern to the repo root and miss nested .claude/
+# dirs in monorepos.
+**/.claude/settings.local.json
+**/.claude/.cc-writes/
