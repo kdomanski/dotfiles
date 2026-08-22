@@ -25,15 +25,29 @@ type = "archive-file"
 url = "https://github.com/BurntSushi/ripgrep/releases/download/{{ .versions.ripgrep }}/ripgrep-{{ .versions.ripgrep }}-{{ $rgarch }}.tar.gz"
 path = "ripgrep-{{ .versions.ripgrep }}-{{ $rgarch }}/rg"
 
-["bin/diff-so-fancy"]
-    type = "file"
-    url = "https://github.com/so-fancy/diff-so-fancy/releases/download/v1.4.4/diff-so-fancy"
-    executable = true
+# delta
+{{ if eq .chezmoi.os "linux" }}
+{{ $deltaarch := ""}}
+{{ if (eq .chezmoi.arch "amd64") -}}
+    {{ $deltaarch = "x86_64-unknown-linux-musl" }}
+{{ else if (or .raspi (eq .chezmoi.arch "arm")) -}}
+    {{ $deltaarch = "arm-unknown-linux-gnueabihf" }}
+{{ else }}
+    {{ $deltaarch = "x86_64-unknown-linux-musl" }}
+{{ end -}}
+["bin/delta"]
+type = "archive-file"
+url = "https://github.com/dandavison/delta/releases/download/{{ .versions.delta }}/delta-{{ .versions.delta }}-{{ $deltaarch }}.tar.gz"
+path = "delta-{{ .versions.delta }}-{{ $deltaarch }}/delta"
+{{ end }}
 
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.arch "amd64") }}
+# renovate: datasource=github-tags packageName=kubernetes/kubernetes
 ["bin/kubectl"]
     type = "file"
     url = "https://dl.k8s.io/release/v1.29.6/bin/linux/amd64/kubectl"
     executable = true
+{{ end }}
 
 {{ if and (eq .chezmoi.os "linux") (eq .chezmoi.arch "amd64") }}
 ["bin/direnv"]
