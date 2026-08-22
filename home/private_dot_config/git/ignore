@@ -1,0 +1,24 @@
+# Global gitignore for personal-preference junk only.
+# Project-specific build artifacts belong in each project's own .gitignore,
+# not here.
+
+# macOS Finder droppings
+.DS_Store
+.AppleDouble
+._*
+.Spotlight-V100
+.Trashes
+
+# Editor / IDE scratch files
+*.swp
+*.swo
+*~
+.idea/
+
+# .vscode/ is deliberately NOT ignored here: many projects commit a shared
+# .vscode/ (settings.json, extensions.json, launch.json) on purpose, and a
+# global ignore would silently hide those from `git add`/`git status` in
+# every repo. Ignore it per-project instead if a given repo doesn't want it.
+
+# direnv
+.direnv/

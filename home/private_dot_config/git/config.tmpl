@@ -1,8 +1,5 @@
 # -*- mode: ini -*-
 
-# for compatibility with diff-so-fancy
-[add "interactive"]
-	useBuiltin = false
 [alias]
 	dd = diff --cached
 	sub = submodule update --init --recursive
@@ -14,11 +11,15 @@
 [commit]
 	gpgsign = false
 [core]
-	pager = $HOME/bin/diff-so-fancy | less --tabs=4 -RFX
+	pager = delta
 	autocrlf = false
+[delta]
+	navigate = true
+	line-numbers = true
 [diff]
 	renames = copies
 	algorithm = histogram
+	colorMoved = default
 [fetch]
 	prune = true
 [gpg]
@@ -28,7 +29,9 @@
 [init]
 	defaultBranch = main
 [interactive]
-    diffFilter = "diff-so-fancy --patch"
+	diffFilter = delta --color-only
+[merge]
+	conflictStyle = zdiff3
 [pull]
 	rebase = true
 [push]
