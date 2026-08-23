@@ -65,6 +65,12 @@ zstyle :omz:plugins:ssh-agent lazy yes
 
 source $ZSH/oh-my-zsh.sh
 
+# Silence zsh's own terminal bells: TAB on an ambiguous completion, ctrl+c
+# mid-line, and walking off the end of history. Uncomment to stop them at the
+# source, which would let you re-enable iTerm2's audible bell without the noise.
+# Only covers zsh -- vim, less, and other TUIs still ring the bell themselves.
+# unsetopt BEEP LIST_BEEP HIST_BEEP
+
 # custom aliases
 {{- if lookPath "eza" }}
 alias ls=eza
